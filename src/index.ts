@@ -7,6 +7,7 @@ import { removeUser } from './modules/Delete';
 const server = createServer((req, res) => {
   let url;
   let id = '';
+  const body: Buffer[] = [];
 
   if (req.url?.startsWith('/api/users/')) {
     url = '/api/users/';
@@ -15,7 +16,11 @@ const server = createServer((req, res) => {
     url = req.url;
   }
 
-  const body: Buffer[] = [];
+  server.on('error', () => {
+    res.statusCode = 500;
+    res.end('500');
+  })
+  // this.emit('error', new Error("Error!!!"));
   req
     .on('data', (chunk) => {
       body.push(chunk);
@@ -34,6 +39,7 @@ const server = createServer((req, res) => {
           }
           break;
         default:
+          res.statusCode = 404;
           res.end('404');
           break;
       }
@@ -54,6 +60,7 @@ const server = createServer((req, res) => {
       }
       break;
     default:
+      res.statusCode = 404;
       res.end('404');
       break;
   }
