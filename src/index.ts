@@ -1,6 +1,7 @@
 import { createServer } from 'node:http';
 import { getUserById, getUsersAll } from './modules/Get';
 import { setUser } from './modules/Post';
+import { updateUser } from './modules/Put';
 
 const server = createServer((req, res) => {
   let url;
@@ -27,6 +28,9 @@ const server = createServer((req, res) => {
           }
           break;
         case '/api/users/':
+          if (req.method === 'PUT') {
+            updateUser(res, id, JSON.parse(data));
+          }
           break;
         default:
           res.end('404');
@@ -41,7 +45,9 @@ const server = createServer((req, res) => {
       }
       break;
     case '/api/users/':
-      getUserById(res, id);
+      if (req.method === 'GET') {
+        getUserById(res, id);
+      }
       break;
     default:
       res.end('404');
