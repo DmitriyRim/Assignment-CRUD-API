@@ -3,7 +3,7 @@ import { User, usersDB } from '../api/users';
 import { hasFilds, isUserById, isUuid } from '../utils/utils';
 
 export const updateUser = (res: ServerResponse, userId: string, data: User) => {
-  if ((isUuid(res, userId) && isUserById(res, userId), hasFilds(res, data))) {
+  if (isUuid(res, userId) && isUserById(res, userId) && hasFilds(res, data)) {
     const userIndex = usersDB.findIndex((item) => item.id === userId);
 
     usersDB[userIndex] = {
