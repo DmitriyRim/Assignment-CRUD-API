@@ -1,0 +1,16 @@
+{
+  "dataUsers": [
+    {
+      "id": "01234567-9ABC-DEF0-1234-56789ABCDEF0",
+      "username": "Vasia",
+      "age": 12,
+      "hobbies": []
+    },
+    {
+      "id": "adad",
+      "username": "Masha",
+      "age": 24,
+      "hobbies": ["Run", "Books"]
+    }
+  ]
+}
