@@ -6,9 +6,9 @@ export const getUsersAll = (res: ServerResponse) => {
   res.end(JSON.stringify(usersDB));
 };
 
-export const getUserById =  (res: ServerResponse, userId: string) => {
+export const getUserById = (res: ServerResponse, userId: string) => {
   if (isUuid(res, userId)) {
-    const userData =  isUserById(res, userId);
+    const userData = isUserById(res, userId);
 
     if (userData !== null) {
       res.statusCode = 200;

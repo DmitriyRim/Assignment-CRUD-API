@@ -1,5 +1,6 @@
 import { createServer } from 'node:http';
 import { getUserById, getUsersAll } from './modules/Get';
+import { setUser } from './modules/Post';
 
 const server = createServer((req, res) => {
   let url;
@@ -12,9 +13,32 @@ const server = createServer((req, res) => {
     url = req.url;
   }
 
+  const body: Buffer[] = [];
+  req
+    .on('data', (chunk) => {
+      body.push(chunk);
+    })
+    .on('end', () => {
+      const data = Buffer.concat(body).toString();
+      switch (url) {
+        case '/api/users':
+          if (req.method === 'POST') {
+            setUser(res, JSON.parse(data));
+          }
+          break;
+        case '/api/users/':
+          break;
+        default:
+          res.end('404');
+          break;
+      }
+    });
+
   switch (url) {
     case '/api/users':
-      getUsersAll(res);
+      if (req.method === 'GET') {
+        getUsersAll(res);
+      }
       break;
     case '/api/users/':
       getUserById(res, id);
