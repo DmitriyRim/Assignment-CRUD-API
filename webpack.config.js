@@ -1,5 +1,6 @@
 import path from 'path';
 import { cwd } from 'process';
+import Dotenv from 'dotenv-webpack';
 
 export default {
   entry: './src/index.ts',
@@ -20,4 +21,7 @@ export default {
       }
     ],
   },
+  plugins: [
+    new Dotenv()
+  ]
 };

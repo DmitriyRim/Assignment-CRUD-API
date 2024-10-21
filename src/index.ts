@@ -3,6 +3,9 @@ import { getUserById, getUsersAll } from './modules/Get';
 import { setUser } from './modules/Post';
 import { updateUser } from './modules/Put';
 import { removeUser } from './modules/Delete';
+import 'dotenv/config';
+
+const PORT = process.env.PORT || 8000;
 
 const server = createServer((req, res) => {
   let url;
@@ -19,7 +22,8 @@ const server = createServer((req, res) => {
   server.on('error', () => {
     res.statusCode = 500;
     res.end('500');
-  })
+  });
+
   // this.emit('error', new Error("Error!!!"));
   req
     .on('data', (chunk) => {
@@ -66,6 +70,6 @@ const server = createServer((req, res) => {
   }
 });
 
-server.listen(3000, '127.0.0.1', () => {
-  console.log('Listening on 127.0.0.1:3000');
+server.listen(Number(PORT), '127.0.0.1', () => {
+  console.log(`Listening on 127.0.0.1:${PORT}`);
 });
