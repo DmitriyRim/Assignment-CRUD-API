@@ -15,30 +15,36 @@ export const getUsersAll = async (res: ServerResponse) => {
 };
 
 export const getUserById = async (res: ServerResponse, userId: string) => {
-    let response;
     if (isUuid(res ,userId)) {
-        const file = await readFile('./src/api/users.json', { encoding: 'utf8' });
-        const userData = JSON.parse(file).dataUsers.find(
-          (item: User) => item.id === userId,
-        );
+        const userData = await isUserById(res ,userId)
 
-        if(userData){
-            response = JSON.stringify(userData);
+        if(userData !== null){
             res.statusCode = 200;
-        } else {
-            res.statusCode = 404;
-            response = 'User not found';
+            res.end(JSON.stringify(userData));
         }
     }
-
-  res.end(response);
 };
 
-export const isUuid  = (res: ServerResponse, id: string): boolean => {
-    if (!/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id)) {
+export const isUuid  = (res: ServerResponse, userId: string): boolean => {
+    if (!/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(userId)) {
         res.statusCode = 400;
         res.end('not uuid');
         return false;
     }
     return true;
 } 
+
+export const isUserById = async (res: ServerResponse, userId: string): Promise<User | null> => {
+    const file = await readFile('./src/api/users.json', { encoding: 'utf8' });
+    const user = JSON.parse(file).dataUsers.find(
+      (item: User) => item.id === userId,
+    );
+    console.log(user)
+    if (!user) {
+        res.statusCode = 400;
+        res.end('User not found');
+        return null;
+    }
+
+    return user;
+}
